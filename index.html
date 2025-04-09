@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- Added user-scalable=no -->
     <title>Global Blob Conquest</title>
     <style>
         body {
@@ -13,19 +14,27 @@
             color: white;
             font-family: Arial, sans-serif;
             user-select: none;
+            /* Prevent text selection */
+            -webkit-user-select: none;
+            /* Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+ */
+            touch-action: none;
+            /* Prevent default touch actions like pinch-zoom */
         }
 
         #game-container {
             width: 100vw;
             height: 100vh;
             position: relative;
-            cursor: pointer;
+            /* Removed cursor: pointer and crosshair here, let JS handle if needed */
             background-image: url('/api/placeholder/800/600');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             opacity: 0.5;
-            cursor: crosshair;
         }
 
         .base {
@@ -40,6 +49,8 @@
             font-size: 12px;
             border: 2px solid white;
             transition: transform 0.2s;
+            pointer-events: none;
+            /* Bases shouldn't interfere with touch */
         }
 
         .base:hover {
@@ -56,6 +67,8 @@
             height: 16px;
             border-radius: 50%;
             transition: background-color 0.5s;
+            pointer-events: none;
+            /* Blobs shouldn't interfere with touch */
         }
 
         .explosion {
@@ -66,6 +79,8 @@
             background-color: #ffcc00;
             opacity: 1;
             animation: explode 0.5s ease-out forwards;
+            pointer-events: none;
+            /* Explosions shouldn't interfere with touch */
         }
 
         @keyframes explode {
@@ -87,6 +102,8 @@
             background-color: rgba(0, 0, 0, 0.7);
             padding: 10px;
             border-radius: 5px;
+            pointer-events: none;
+            /* UI shouldn't interfere with touch */
         }
 
         #victory {
@@ -100,6 +117,7 @@
             text-align: center;
             display: none;
             z-index: 100;
+            /* Victory screen needs pointer events for the button */
         }
 
         #restart-button {
@@ -115,20 +133,52 @@
         .team-count {
             margin-bottom: 5px;
         }
+
+        /* --- Touch Control Visuals --- */
+        .touch-control {
+            position: absolute;
+            width: 80px;
+            /* Adjust size as needed */
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(128, 128, 128, 0.2);
+            pointer-events: none;
+            /* Visual only, don't block game container touches */
+            display: none;
+            /* Hidden by default, shown by JS on touch devices */
+            box-sizing: border-box;
+            /* Include border in size */
+        }
+
+        #touch-control-move {
+            /* Positioned by JS */
+        }
+
+        #touch-control-shoot {
+            /* Positioned by JS */
+        }
+
+        /* --------------------------- */
     </style>
 </head>
 
 <body>
     <div id="game-container">
+        <!-- UI and Victory Screen remain -->
         <div id="ui"></div>
         <div id="victory">
             <h2>Victory!</h2>
             <p>Your color has conquered the world!</p>
             <button id="restart-button">Play Again</button>
         </div>
+
+        <!-- Add visual elements for touch controls -->
+        <div id="touch-control-move" class="touch-control"></div>
+        <div id="touch-control-shoot" class="touch-control"></div>
+
     </div>
 
-    <!-- Remove the old <script> block and replace it with this line -->
     <script src="game.js"></script>
 </body>
 
