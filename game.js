@@ -27,8 +27,7 @@ let lastAttackTimes = [];
 const keysPressed = { w: false, a: false, s: false, d: false };
 
 // --- State for Touch Controls ---
-// const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-const isTouchDevice = false;
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 console.log("Is Touch Device:", isTouchDevice);
 let movementTouchId = null;
 let touchDx = 0;
